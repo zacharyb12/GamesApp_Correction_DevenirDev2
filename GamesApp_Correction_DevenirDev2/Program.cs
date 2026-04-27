@@ -1,6 +1,7 @@
 using GamesApp_Correction_DevenirDev2.Data;
 using GamesApp_Correction_DevenirDev2.Models;
 using GamesApp_Correction_DevenirDev2.Repositories.GamesRepositories;
+using GamesApp_Correction_DevenirDev2.Repositories.UserRepositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ namespace GamesApp_Correction_DevenirDev2
 
             // Configuration Injection de dépendances
             builder.Services.AddScoped<IGameRepository,GameRepository>();
+            builder.Services.AddScoped<IUserRepository , UserRepository>();
 
 
             // Configuration de l'identity

@@ -82,8 +82,14 @@ namespace GamesApp_Correction_DevenirDev2.Controllers
         {
             Game? game = await _repository.GetGameById(id);
 
+            if (game == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-            if(game == null)
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId != game.UserId)
             {
                 return RedirectToAction("Index");
             }
@@ -111,6 +117,13 @@ namespace GamesApp_Correction_DevenirDev2.Controllers
                 {
                     return View(updatedGame);
                 }
+                Game? g = await _repository.GetGameById(updatedGame.Id);
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (g.UserId == userId)
+                {
+                    return RedirectToAction("Index");
+                }
 
                 bool result = await _repository.UpdateGame(updatedGame);
 
@@ -134,7 +147,14 @@ namespace GamesApp_Correction_DevenirDev2.Controllers
         {
             Game? game = await _repository.GetGameById(id);
 
-            if(game == null)
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (game == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if(userId != game.UserId)
             {
                 return RedirectToAction("Index");
             }
@@ -150,6 +170,14 @@ namespace GamesApp_Correction_DevenirDev2.Controllers
         {
             try
             {
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if(userId != gameToDelete.UserId)
+                {
+                    return RedirectToAction("Index");
+                }
+
+
                 bool result = await _repository.DeleteGame(id);
 
                 if(!result)
